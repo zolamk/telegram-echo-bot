@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -10,6 +11,8 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
+
+var TELEGRAM_BOT_TOKEN string
 
 type Data struct {
 	UpdateID int `json:"update_id"`
@@ -79,7 +82,7 @@ func handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 
 	}
 
-	if request, err := http.NewRequest("POST", "https://api.telegram.org/bot551254635:AAEbIWZiLY7ZaLhtSLFs0BNSX6Nv3x_sZf0/sendMessage", bytes.NewReader(responseDataJSON)); err != nil {
+	if request, err := http.NewRequest("POST", fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", TELEGRAM_BOT_TOKEN), bytes.NewReader(responseDataJSON)); err != nil {
 
 		log.Println(err)
 
